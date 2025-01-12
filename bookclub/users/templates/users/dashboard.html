@@ -5,11 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BookClub - Logout</title>
+    <title>BookClub - Dashboard</title>
 </head>
 <body>
-    <h2>You have been logged out.</h2>
-    <a href="{% url 'login' %}">Login again</a>
+    <h2>Welcome, {{ user.username }}!</h2>
+    <a href="{% url 'logout' %}">Logout</a>
 
 </body>
 </html>
