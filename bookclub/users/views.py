@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .forms import RegisterForm
-from .models import Profile, Book 
-from django.contrib.auth.decorators import login_required
+from .models import Profile
+from books.models import Book
 
 # Create your views here.
 def home(request):
@@ -21,7 +21,8 @@ def register(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'users/dashboard.html')
+    user_books = Book.objects.filter(uploaded_by=request.user)  
+    return render(request, 'users/dashboard.html', {'user_books': user_books})
 
 @login_required
 def edit_profile(request):
@@ -32,30 +33,4 @@ def edit_profile(request):
         request.user.profile.favorite_genre = favorite_genre    
         request.user.profile.save()
         return redirect('dashboard')    
-    return render(request, 'users/edit_profile.html', {'profile': request.user.profile})       
-     
-"""     profile = Profile.objects.get(user=request.user)
-    if request.method == 'POST':
-        form = RegisterForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
-    else:
-        form = RegisterForm(instance=profile)
-    return render(request, 'users/edit_profile.html', {'form': form}) """
-    
-@login_required
-def book_list(request):
-    books = Book.objects.all()
-    return render(request, 'users/book_list.html', {'books': books})    
-
-@login_required
-def add_book(request):
-    if request.method == 'POST':
-        title = request.POST['title']
-        author = request.POST['author']
-        description = request.POST['description']
-        Book.objects.create(title=title, author=author, description=description, uploaded_by=request.user)  
-        return redirect('book_list')
-    
-    return render(request, 'users/add_book.html')
+    return render(request, 'users/edit_profile.html', {'profile': request.user.profile})

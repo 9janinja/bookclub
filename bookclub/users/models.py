@@ -21,12 +21,3 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
     
-class Book(models.Model):
-    title = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
-    genre = models.CharField(max_length=100)
-    description = models.TextField()
-    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return f"{self.title} by {self.author}"
